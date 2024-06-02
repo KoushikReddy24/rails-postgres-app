@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+
+  postgres:
+    image: postgres
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    
+    ports:
+      - "5433:5432"
+    
+    environment:
+      - POSTGRES_USER=koushik
+      - POSTGRES_PASSWORD=123456789
+      - POSTGRES_DB=rails_dev
+      # - POSTGRES_HOST=postgres
+
+  web:
+    image: koushikreddy24/rubyrailsapp:latest
+
+    volumes:
+      - .:/app
+
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      - postgres
+    
+    environment:
+      DB_NAME: rails_dev
+      DB_USER: koushik
+      DB_PASSWORD: 123456789
+      DB_HOST: postgres
+
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    
+    # links:
+    #   - database:postgres
+
+volumes:
+  postgres_data: {}

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres-app
+        image: postgres
+        env:
+        - name: POSTGRES_DB
+          value: "rails_dev"
+        - name: POSTGRES_USER
+          value: "koushik"
+        - name: POSTGRES_PASSWORD
+          value: "123456789"
+        - name: POSTGRES_HOST
+          value: "postgres"
+        ports:
+        - containerPort: 5432

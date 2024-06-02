@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deploy
+  labels:
+    app: rails-web-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rails-web-app
+  template:
+    metadata:
+      labels:
+        app: rails-web-app
+    spec:
+      containers:
+      - name: rails-app
+        image: koushikreddy24/rubyrailsapp:latest
+        env:
+        - name: DB_HOST
+          value: "postgres"
+        - name: DB_USER
+          value: "koushik"
+        - name: DB_PASSWORD
+          value: "123456789"
+        - name: DB_NAME
+          value: "rails_dev"
+        ports:
+        - containerPort: 3000
